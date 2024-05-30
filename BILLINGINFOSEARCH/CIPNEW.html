@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>INFO SEARCH</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    #container {
+      position: relative;
+      width: 660px; /* Adjusted the container width to accommodate larger buttons and space between them */
+      height: 660px; /* Adjusted the container height to accommodate larger buttons and space between them */
+    }
+
+    .button {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      font-size: 24px;
+      text-align: center;
+      line-height: 300px;
+      border-radius: 50px;
+      text-decoration: none;
+      color: #fff;
+      background-color: transparent;
+      border: 3px solid #333;
+      cursor: pointer;
+    }
+
+    #button1 { top: 0; left: 0; }
+    #button2 { top: 0; right: 0; }
+    #button3 { bottom: 0; left: 0; }
+    #button4 { bottom: 0; right: 0; }
+
+    /* margin between buttons */
+    #button1 { margin-right: 10px; margin-bottom: 10px; }
+    #button2 { margin-left: 10px; margin-bottom: 10px; }
+    #button3 { margin-right: 10px; margin-top: 10px; }
+    #button4 { margin-left: 10px; margin-top: 10px; }
+
+    /* Styles for individual buttons with custom image paths */
+    #button1 {
+      background-image: url('insuranceicon.jpeg');
+    }
+    
+    #button2 {
+      background-image: url('icd10icon.jpg');
+    }
+    
+    #button3 {
+      background-image: url('extensionicon1.jpg');
+    }
+    
+    #button4 {
+      background-image: url('doctoricon2.jpg');
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <a href="extension.HTML" class="button" id="button3">.</a>
+    <a href="Icd10.html" class="button" id="button2">MP SHAH ICD-10 info</a>
+ <a href="Insurance.html" class="button" id="button1">.</a>
+    <a href="Icd10.htm" class="button" id="button4">MP SHAH ICD-10 info</a>
+  </div>
+
+  <script>
+  
+  </script>
+</body>
+</html>

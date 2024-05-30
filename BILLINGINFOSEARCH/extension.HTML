@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospital Extension Lookup</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #ffffff; /* White */
+      color: #4682b4; /* Carolina blue */
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .search-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+    
+    input[type=text] {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 300px;
+      background-color: #ffffff;
+      color: #333;
+    }
+    
+    button {
+      background-color: #4682b4; /* Carolina blue */
+      color: #ffffff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    
+    button:hover {
+      background-color: #2d6ca2;
+    }
+    
+    #result {
+      background-color: #ffffff;
+      color: #4682b4; /* Carolina blue */
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Hospital Extension Lookup</h1>
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Enter a name">
+      <button onclick="searchExtension()">Search</button>
+    </div>
+    <div id="result"></div>
+<script>
+
+const hospital_info = {
+  "Ignatius": 161,
+  "Damaris Mwambu": 164,
+  "Cate": 163,
+  "Abigael": 162,
+  "Daisy and Whitney": 165,
+  "Dorcas": 166,
+  "Roshni Jankharia": 120,
+  "Dhruti and Rose": 121,
+  "Manan Shah": 122,
+  "George and Tanui": 123,
+  "Phillip": 124,
+  "Marietta": 126,
+  "Abby Olaba": 128,
+  "Robert": 212,
+  "Dr. Shaina Shah": 170,
+  "Mary and Evelyne": 231,
+  "Dan Nelionga": 242,
+  "Dr. Bhupi Reel": 512,
+  "Kalpana Raithatha": 130,
+  "Rupa Kanani / Alex": [117, 198],
+  "Dr. Toseef Din": 110,
+  "Dr. Warugongo": 360,
+  "Irangi & Margaret": 250,
+  "Rahab Kuria": 112,
+  "Dr. A. I. Desai": 361,
+  "Staff": 251,
+  "Dr. Osoro Mbui": 119,
+  "Dr. Heta": 362,
+  "Mortuary": 252,
+  "Sheila Andaye": 195,
+  "Dr. Acharya": 367,
+  "Maintenance": null,
+  "Dr. Vishal Patel": 118,
+  "Dr. Wahenya": 372,
+  "Eng. Arnolad Mwanzia": 220,
+  "Maureen Ashiundu": 113,
+  "Dr. Choksey/Vakil": 375,
+  "Helpdesk": 261,
+  "Dr. Cynthia Kanda": 196,
+  "Dr. J.M Kamau/Dr. Loise Reception": 376,
+  "Benson Irungu": 262,
+  "Shahira Lalani": 190,
+  "Dr. Kudhrati Reception": 377,
+  "Johnson Kilonzo": 263,
+  "Yvonne Kirigo": 193,
+  "Board Room": 800,
+  "Malek Lalji Ward": null,
+  "Breast Clinic": null,
+  "ENT": null,
+  "Nursing": [641, 642],
+  "Dr. Karen Mbaabu": 307,
+  "Cashier": 334,
+  "Ward Co-Ordinator": 649,
+  "Breast Care Services": 350,
+  "Reception": 335,
+  "Ward Doctor": 650,
+  "Maternity Ward": 374,
+  "Cardiac Clinic": null,
+  "Endoscopy": null,
+  "Margaret Njeru": 621,
+  "Dr. Bernard Samia": 711,
+  "Nursing (2)": 680,
+  "Labour Room": 622,
+  "Customer Care": 740,
+  "Cashier - Cardiac": 741,
+  "Finance": null,
+  "Medical Records": null,
+  "Consultation Rm 1": 742,
+  "Robert Kahunyo": 270,
+  "Dept Staff": [271, 272],
+  "Nursing Cardiac": 745,
+  "Nursing School": null,
+  "Cardiac TMT Room": 746,
+  "Sr. Bett - Principal": 381,
+  "Casualty (A&E)": null,
+  "Lecturers": 382,
+  "Librarian": 383,
+  "Reception (2)": 384,
+  "Pediatric": null,
+  "Laboratory": 703,
+  "MMD-Non-Medical": null,
+  "Stock Controller": 704,
+  "Reception (3)": 722,
+  "Pharmacy": 723,
+  "Well Baby Clinic": 724,
+  "Hall": null,
+  "Main Hall": 801,
+  "Hall annex": 802,
+  "Casualty (Triage 2)": 720,
+  "Doctor Room 1": 725,
+  "Doctor Room 2": 726,
+  "Doctor Room 3": 728,
+  "Procedure Room": 727,
+  "Doctor": 605,
+  "Cashier (2)": 729,
+  "Customer Care (2)": 732,
+  "Lucy Otieno": 730,
+  "FMC": 733,
+  "Doctor Room 4": 735,
+  "Room 6": 734,
+  "Doctors Room 6": 736,
+  "Laboratory (2)": 737,
+  "Room 5": 739,
+  "Edna Kiptoon": 140,
+  "Well Baby Cashier": 749,
+  "Room 7": 185,
+  "Paeds Wards": 143,
+  "Room 1": 747,
+  "Raphel": 141,
+  "Specialty clinic Reception": 501,
+  "Cath Lab": null,
+  "Velma": 142,
+  "3rd Floor - ward coordinator": 509,
+  "Nursing (3)": 750,
+  "4th Floor Nursing": 503,
+  "Technician": 751,
+  "Sandra": 145,
+  "4th Floor Cashier": 504,
+  "Chemotherapy": 670,
+  "HR Front desk": 146,
+  "5th Floor Nursing": 505,
+  "Specialty cashier": 508,
+  "Hansaben Cashier": 509,
+  "CCPR": null,
+  "Lony": 151,
+  "Melody & Irene": 152,
+  "Pediatricians Office": 513,
+  "Payal Doshi": 153,
+  "5th Floor Cashier (2)": 506,
+  "Charles Iyaya": 154,
+  "David and Solomon": 155,
+  "Doctor Room 5": 508,
+  "Johnstone Kiswili": 156,
+  "John Kimani & Stephen Wambua": 157,
+  "Patient Services": null,
+  "Felix": 167,
+  "Miriam Orang": 601,
+  "Switchboard": 100,
+  "Nursing (4)": 602,
+  "MMD- Leila": 450,
+  "Main Reception": [114, 115],
+  "Doctors Room": 603,
+  "MMD- Pharmacy": 452,
+  "Reception-Grand Entrance": 116,
+  "Patient Room": 604,
+  "Patricia": 453,
+  "Call Center": 900,
+  "Ward Co-Ordinator (2)": 609,
+  "Pharmacy Store": 454,
+  "Credit Control": 339,
+  "Main Pharmacy": 461,
+  "Francis and Liz": 131,
+  "Executive": null,
+  "In-Patient Pharmacy": 462,
+  "Kennedy Odhiambo": 132,
+  "Nursing Station": 510,
+  "Out-Patient Pharmacy": 463,
+  "Edwin and Titus": 133,
+  "Lilian Mulinge": 441,
+  "Nikisha Gudhka": 468,
+  "Betty and Harvir": 134,
+  "Hansaben - Private Ward": null,
+  "Cashier (3)": 469,
+  "Pauline": 135,
+  "Nursing Station (2)": 511,
+  "Physiotherapy": null,
+  "Beatrice Makau": 136,
+  "Sr. Marren Chunga & Sr. Rose Ngugi": 440,
+  "Reception (4)": 480,
+  "Infection Control": null,
+  "Physiotherapy Shop": 481,
+  "Mary Musau": 137,
+  "Nelius Makandu": 410,
+  "Deep Bhayani": 482,
+  "Virginia": 203,
+  "Internal Audit": null,
+  "Staff Room": 483,
+  "Daniella": 204,
+  "Toral Shah": 127,
+  "Gym": 484,
+  "Pius and Mercy": 205,
+  "Winnie": 125,
+  "Procurement": null,
+  "Elijah and Agnes": 207,
+  "Dr. Hardika / Beatrice": 451,
+  "Erick": 208,
+  "Peter": 210,
+  "Quality Improvement": null,
+  "CSSD": 400,
+  "Karania Ward": null,
+  "Agnes Thuo": 191,
+  "CSSD (2)": [611, 612],
+  "Lilian Kaisha & Carol Machio": 194,
+  "DCC": null,
+  "Ward Co-ordinator (3)": 619,
+  "Christine Waithera & Agnes Thuo": 197,
+  "Dr Room 1": 313,
+  "Kantaria Ward": null,
+  "Radiology": null,
+  "Dr Room 2": 314,
+  "Nursing (5)": 631,
+  "Cashier (4)": 490,
+  "Dr Room 3": 317,
+  "Nursing Station (3)": 632,
+  "James Thuku": 491,
+  "Nursing (6)": 342,
+  "Ward Co-ordinator (4)": 639,
+  "Radiographers": 492,
+  "Diabetic Care Centre": 365,
+  "Kitchen": null,
+  "Nursing (7)": 493,
+  "Triage Room 2 (2)": 366,
+  "Esau": 240,
+  "Dr. James Thiringi": 494,
+  "Dental": null,
+  "Main kitchen": 241,
+  "ESTHER ADHIAMBO OKOTH": 495,
+  "KPJ 1st Floor": null,
+  "Cashier (5)": 498,
+  "Triage": [738, 797],
+  "Cashier - CT Scan": 499,
+  "Dr. Sharma": 322,
+  "Dr. Kaberia/Shruti": 324,
+  "Drs.Plaza": null,
+  "Mahendra Karania": 300,
+  "Dr. Neeraj Krishnan": 301,
+  "Dr. Gichuhi": 302,
+  "Dr. Kiarie - Nurse": 306,
+  "Dr. Kinuthia Gichuhi": 309,
+  "Dr. Vishwanath": 310,
+  "Dr. Vishwanath - Reception": 311,
+  "Dr. J.M. Kamau": 312,
+  "Dr. Wanjohi": 315,
+  "Dr Mohammed Hussein": 316,
+  "Dr. Charles Waihenya": 318,
+  "Dr. Dhirane Shah - Reception": 319,
+  "Dr. Dhirane Shah - 1": 320,
+  "Dr. Dhirane Shah - 2": 321,
+  "Dr. Shruti/Rafaa": 322,
+  "Dr. H.S Gill": 325,
+  "Dr. Edward Sang": 326,
+  "Dr. Pankaj Patel": 328,
+  "Dr. Pankaj Patel 2": 329,
+  "Dr. Gichuru Mwangi": 330,
+  "Dr. Gichuru Mwangi-Reception": 331,
+  "Dr Mohammed Hussein (2)": 332,
+  "Dr. H.S Gill - Reception": 333,
+  "Phil Dastur": 337,
+  "Dr. M B Pancholi": 339,
+  "Dr. Assad Mughal": 340,
+  "Dr. Mughal/ Dr. Edward Sang": 341,
+  "Dr. Choksey Reception": 344,
+  "Chairman's Office": 345,
+  "Dr. Sandeep/Kirtida": 346,
+  "Dr. Sandeep - Laparoscopic": 347,
+  "Dr. A. K. Shah - 1": 348,
+  "Dr. Kioni Reception": 351,
+  "Dr. A. K. Shah - 2": 352,
+  "Lions Eye Hospital": 354,
+  "Jaffery": 353,
+  "Dr. Wanjohi - Reception": 355,
+  "Dr. K.S. Giddie Reception": 356,
+  "Dr. K. S. Giddie": 357,
+  "Geojoannes Imbenzi": 420,
+  "Nancy and Nereya": 421,
+  "Reception (5)": 422,
+  "Laboratory Typists": 423,
+  "Molecular Lab": 424,
+  "Lab Sample Collection": 425,
+  "Cashier (6)": 429,
+  "Timothy Onyuma &Grace Kiraka": 430,
+  "Biochemistry": 431,
+  "Blood bank": 432,
+  "Hematology": 433,
+  "Histology": 434,
+  "Microbiology": 435,
+  "Parasitology": 436,
+  "Serology": 437,
+  "Sample Room Collection": 438,
+  "Florence": 439,
+};
+
+function searchExtension() {
+  const searchInput = document.getElementById("searchInput").value.toLowerCase();
+  const resultDiv = document.getElementById("result");
+
+  for (let name in hospital_info) {
+    if (name.toLowerCase().includes(searchInput)) {
+      const extension = hospital_info[name];
+      if (Array.isArray(extension)) {
+        resultDiv.innerHTML = `The phone extensions for ${name} are ${extension.join(", ")}.`;
+      } else if (extension !== null) {
+        resultDiv.innerHTML = `The phone extension for ${name} is ${extension}.`;
+      } else {
+        resultDiv.innerHTML = `No phone extension available for ${name}.`;
+      }
+      return;
+    }
+  }
+
+  resultDiv.innerHTML = `Extension not found in the database.`;
+}
+
+</script>
+
+  </div>
+</body>
+</html>
